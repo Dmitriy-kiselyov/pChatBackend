@@ -15,12 +15,21 @@ public class UserDB {
             EncryptedUser encryptedUser = new EncryptedUser(user);
             encryptedUser.generateToken();
 
-            insetUser(encryptedUser);
+            insertUser(encryptedUser);
         }
     }
 
-    public static void insetUser(EncryptedUser user) throws SQLException {
+    public static void insertUser(EncryptedUser user) throws SQLException {
         DBUtil.insert(TABLE, user.getLogin(), user.getPassword(), user.getToken());
+    }
+
+    public static String insertUser(User user) throws SQLException {
+        EncryptedUser encryptedUser = new EncryptedUser(user);
+        encryptedUser.generateToken();
+
+        DBUtil.insert(TABLE, encryptedUser.getLogin(), encryptedUser.getPassword(), encryptedUser.getToken());
+
+        return encryptedUser.getToken();
     }
 
     @Nullable
@@ -44,5 +53,13 @@ public class UserDB {
         }
 
         return null;
+    }
+
+    static public boolean isUserExists(User user) throws SQLException {
+        String query = "SELECT * FROM " + TABLE
+                + " WHERE login = \"" + user.getLogin() + "\"";
+        ResultSet result = DBUtil.execute(query);
+
+        return result.next();
     }
 }

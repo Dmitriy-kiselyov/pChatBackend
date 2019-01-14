@@ -43,7 +43,9 @@ public class AuthResponse {
     public enum ErrorCode {
         INCORRECT_CREDENTIALS(100),
         LOGIN_VALIDATION(101),
-        PASSWORD_VALIDATION(102);
+        PASSWORD_VALIDATION(102),
+        USER_EXISTS(103),
+        DATABASE_ERROR(110);
 
         private final int code;
 
