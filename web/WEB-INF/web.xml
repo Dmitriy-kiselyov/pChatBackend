@@ -16,4 +16,7 @@
         <servlet-name>Jersey Web Application</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
+    <listener>
+        <listener-class>ru.pussy_penetrator.DBListener</listener-class>
+    </listener>
 </web-app>
