@@ -9,8 +9,8 @@
         <module name="pChatBackend" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="pChatBackend" target="1.5" />
+    <bytecodeTargetLevel target="8">
+      <module name="pChatBackend" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
