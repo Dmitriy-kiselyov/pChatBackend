@@ -34,7 +34,7 @@ public class AuthService {
             return new AuthResponse(ErrorCode.INCORRECT_CREDENTIALS, "Неверный логин или пароль");
         }
 
-        AuthResponse response = new AuthResponse();
+        AuthResponse response = new AuthResponse(StatusResponse.SUCCESS);
         response.setToken(token);
 
         return response;
@@ -64,7 +64,7 @@ public class AuthService {
             return new AuthResponse(ErrorCode.DATABASE_ERROR, "Ошибка базы данных");
         }
 
-        AuthResponse response = new AuthResponse();
+        AuthResponse response = new AuthResponse(StatusResponse.SUCCESS);
         response.setToken(token);
 
         return response;
