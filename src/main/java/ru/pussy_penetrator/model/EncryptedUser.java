@@ -7,7 +7,7 @@ public class EncryptedUser {
     private String password;
     private String token;
 
-    public EncryptedUser(User user) {
+    public EncryptedUser(AuthUser user) {
         login = user.getLogin();
         password = AuthUtils.encrypt(user.getPassword());
     }

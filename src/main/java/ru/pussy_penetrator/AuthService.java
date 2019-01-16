@@ -2,7 +2,6 @@ package ru.pussy_penetrator;
 
 import ru.pussy_penetrator.model.*;
 import ru.pussy_penetrator.model.AuthResponse.ErrorCode;
-import ru.pussy_penetrator.util.AuthUtils;
 import ru.pussy_penetrator.util.UserValidator;
 import ru.pussy_penetrator.util.UserValidator.LoginValidationError;
 import ru.pussy_penetrator.util.UserValidator.PasswordValidationError;
@@ -16,7 +15,7 @@ import java.sql.SQLException;
 @Produces(MediaType.APPLICATION_JSON)
 public class AuthService {
     @POST
-    public AuthResponse signIn(User user) {
+    public AuthResponse signIn(AuthUser user) {
         AuthResponse validationErrorResponse = validate(user);
         if (validationErrorResponse != null) {
             return validationErrorResponse;
@@ -24,7 +23,7 @@ public class AuthService {
 
         String token = null;
         try {
-            token = UserDB.getToken(user);
+            token = AuthUserDB.getToken(user);
         }
         catch (SQLException e) {
             return new AuthResponse(ErrorCode.DATABASE_ERROR, "Ошибка базы данных");
@@ -41,14 +40,14 @@ public class AuthService {
     }
 
     @PUT
-    public AuthResponse signUp(User user) {
+    public AuthResponse signUp(AuthUser user) {
         AuthResponse validationErrorResponse = validate(user);
         if (validationErrorResponse != null) {
             return validationErrorResponse;
         }
 
         try {
-            if (UserDB.isUserExists(user)) {
+            if (AuthUserDB.isUserExists(user)) {
                 return new AuthResponse(ErrorCode.USER_EXISTS, "Пользователь с таким логином уже существует");
             }
         }
@@ -58,7 +57,7 @@ public class AuthService {
 
         String token;
         try {
-            token = UserDB.insertUser(user);
+            token = AuthUserDB.insertUser(user);
         }
         catch (SQLException e) {
             return new AuthResponse(ErrorCode.DATABASE_ERROR, "Ошибка базы данных");
@@ -70,7 +69,7 @@ public class AuthService {
         return response;
     }
 
-    private AuthResponse validate(User user) {
+    private AuthResponse validate(AuthUser user) {
         LoginValidationError loginError = UserValidator.validateLogin(user.getLogin());
         if (loginError != null) {
             return new AuthResponse(ErrorCode.LOGIN_VALIDATION, loginError.get());

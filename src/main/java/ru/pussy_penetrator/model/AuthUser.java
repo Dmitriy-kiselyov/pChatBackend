@@ -1,12 +1,12 @@
 package ru.pussy_penetrator.model;
 
-public class User {
+public class AuthUser {
     private String login;
     private String password;
 
-    public User() {}
+    public AuthUser() {}
 
-    public User(String login, String password) {
+    public AuthUser(String login, String password) {
         this.login = login;
         this.password = password;
     }

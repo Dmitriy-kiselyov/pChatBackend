@@ -7,11 +7,11 @@ import ru.pussy_penetrator.util.DBUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDB {
+public class AuthUserDB {
     private static final String TABLE = "pchat.users";
 
-    public static void inflateUsers(User[] users) throws SQLException {
-        for (User user : users) {
+    public static void inflateUsers(AuthUser[] users) throws SQLException {
+        for (AuthUser user : users) {
             EncryptedUser encryptedUser = new EncryptedUser(user);
             encryptedUser.generateToken();
 
@@ -23,7 +23,7 @@ public class UserDB {
         DBUtil.insert(TABLE, user.getLogin(), user.getPassword(), user.getToken());
     }
 
-    public static String insertUser(User user) throws SQLException {
+    public static String insertUser(AuthUser user) throws SQLException {
         EncryptedUser encryptedUser = new EncryptedUser(user);
         encryptedUser.generateToken();
 
@@ -33,7 +33,7 @@ public class UserDB {
     }
 
     @Nullable
-    static public String getToken(User user) throws SQLException {
+    static public String getToken(AuthUser user) throws SQLException {
         String query = "SELECT password, token FROM " + TABLE
                 + " WHERE login = \"" + user.getLogin() + "\"";
         ResultSet result = DBUtil.execute(query);
@@ -55,7 +55,7 @@ public class UserDB {
         return null;
     }
 
-    static public boolean isUserExists(User user) throws SQLException {
+    static public boolean isUserExists(AuthUser user) throws SQLException {
         String query = "SELECT * FROM " + TABLE
                 + " WHERE login = \"" + user.getLogin() + "\"";
         ResultSet result = DBUtil.execute(query);

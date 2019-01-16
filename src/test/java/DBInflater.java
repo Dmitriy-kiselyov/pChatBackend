@@ -1,5 +1,5 @@
-import ru.pussy_penetrator.model.User;
-import ru.pussy_penetrator.model.UserDB;
+import ru.pussy_penetrator.model.AuthUser;
+import ru.pussy_penetrator.model.AuthUserDB;
 import ru.pussy_penetrator.util.DBUtil;
 
 import java.io.IOException;
@@ -29,12 +29,12 @@ public class DBInflater {
     }
 
     private static void inflateUsers() throws SQLException {
-        User[] users = new User[] {
-            new User("Dima", "123456"),
-            new User("Tanya", "Orlova"),
-            new User("Popka", "Durak")
+        AuthUser[] users = new AuthUser[] {
+            new AuthUser("Dima", "123456"),
+            new AuthUser("Tanya", "Orlova"),
+            new AuthUser("Popka", "Durak")
         };
 
-        UserDB.inflateUsers(users);
+        AuthUserDB.inflateUsers(users);
     }
 }

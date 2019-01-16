@@ -3,13 +3,10 @@ package ru.pussy_penetrator.util;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import at.favre.lib.crypto.bcrypt.LongPasswordStrategies;
 
-import com.sun.istack.internal.Nullable;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import ru.pussy_penetrator.model.EncryptedUser;
-import ru.pussy_penetrator.model.User;
-import ru.pussy_penetrator.model.UserDB;
 
 import java.util.Date;
 import java.util.HashMap;
