@@ -21,11 +21,16 @@ package ru.pussy_penetrator.util;/*
  *  limitations under the License.
  */
 
+import com.sun.istack.internal.Nullable;
+import sun.font.Script;
+
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,14 +76,14 @@ public class ScriptRunner {
      *
      * @param reader - the source of the script
      */
-    public void runScript(Reader reader) throws IOException, SQLException {
+    public void runScript(Reader reader, @Nullable Map<String, String> replaces) throws IOException, SQLException {
         try {
             boolean originalAutoCommit = connection.getAutoCommit();
             try {
                 if (originalAutoCommit != this.autoCommit) {
                     connection.setAutoCommit(this.autoCommit);
                 }
-                runScript(connection, reader);
+                runScript(connection, reader, replaces);
             }
             finally {
                 connection.setAutoCommit(originalAutoCommit);
@@ -101,8 +106,7 @@ public class ScriptRunner {
      * @throws SQLException if any SQL errors occur
      * @throws IOException  if there is an error reading from the Reader
      */
-    private void runScript(Connection conn, Reader reader) throws IOException,
-                                                                  SQLException {
+    private void runScript(Connection conn, Reader reader, @Nullable Map<String, String> replaces) throws IOException, SQLException {
         StringBuffer command = null;
         try {
             LineNumberReader lineReader = new LineNumberReader(reader);
@@ -130,7 +134,7 @@ public class ScriptRunner {
                     command.append(line.substring(0, line
                             .lastIndexOf(getDelimiter())));
                     command.append(" ");
-                    this.execCommand(conn, command, lineReader);
+                    this.execCommand(conn, replaceCommand(command.toString(), replaces), lineReader);
                     command = null;
                 } else {
                     command.append(line);
@@ -138,7 +142,7 @@ public class ScriptRunner {
                 }
             }
             if (command != null) {
-                this.execCommand(conn, command, lineReader);
+                this.execCommand(conn, replaceCommand(command.toString(), replaces), lineReader);
             }
             if (!autoCommit) {
                 conn.commit();
@@ -152,13 +156,25 @@ public class ScriptRunner {
         }
     }
 
-    private void execCommand(Connection conn, StringBuffer command,
+    private String replaceCommand(String command, @Nullable Map<String, String> replaces) {
+        if (replaces == null) {
+            return command;
+        }
+
+        for(Map.Entry<String, String> entry : replaces.entrySet()) {
+            command = command.replaceAll("<" +entry.getKey() + ">",  entry.getValue());
+        }
+
+        return command;
+    }
+
+    private void execCommand(Connection conn, String command,
                              LineNumberReader lineReader) throws SQLException {
         Statement statement = conn.createStatement();
 
         boolean hasResults = false;
         try {
-            hasResults = statement.execute(command.toString());
+            hasResults = statement.execute(command);
         }
         catch (SQLException e) {
             final String errText = String.format("Error executing '%s' (line %d): %s",

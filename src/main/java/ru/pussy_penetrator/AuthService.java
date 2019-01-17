@@ -25,7 +25,7 @@ public class AuthService {
 
         String token = null;
         try {
-            token = AuthUserDB.getToken(user);
+            token = AuthDB.getToken(user);
         }
         catch (SQLException e) {
             return new AuthResponse(ErrorCode.DATABASE_ERROR, "Ошибка базы данных");
@@ -49,7 +49,7 @@ public class AuthService {
         }
 
         try {
-            if (AuthUserDB.isUserExists(user)) {
+            if (AuthDB.isUserExists(user.getLogin())) {
                 return new AuthResponse(ErrorCode.USER_EXISTS, "Пользователь с таким логином уже существует");
             }
         }
@@ -59,7 +59,7 @@ public class AuthService {
 
         String token;
         try {
-            token = AuthUserDB.insertUser(user);
+            token = AuthDB.insertUser(user);
         }
         catch (SQLException e) {
             return new AuthResponse(ErrorCode.DATABASE_ERROR, "Ошибка базы данных");

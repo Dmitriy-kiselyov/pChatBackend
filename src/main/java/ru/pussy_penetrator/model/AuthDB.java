@@ -1,14 +1,16 @@
 package ru.pussy_penetrator.model;
 
 import com.sun.istack.internal.Nullable;
+import ru.pussy_penetrator.exception.DatabaseException;
+import ru.pussy_penetrator.exception.UnauthorizedException;
 import ru.pussy_penetrator.util.AuthUtils;
 import ru.pussy_penetrator.util.DBUtil;
 
-import javax.validation.constraints.Null;
+import javax.ws.rs.core.HttpHeaders;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AuthUserDB {
+public class AuthDB {
     private static final String TABLE = "pchat.users";
 
     public static void inflateUsers(AuthUser[] users) throws SQLException {
@@ -56,9 +58,9 @@ public class AuthUserDB {
         return null;
     }
 
-    static public boolean isUserExists(AuthUser user) throws SQLException {
+    static public boolean isUserExists(String login) throws SQLException {
         String query = "SELECT * FROM " + TABLE
-                + " WHERE login = \"" + user.getLogin() + "\" COLLATE SQL_Latin1_General_CP1_CI_AS";
+                + " WHERE login = \"" + login + "\"";
         ResultSet result = DBUtil.execute(query);
 
         return result.next();
@@ -79,5 +81,22 @@ public class AuthUserDB {
         }
 
         return result.getString("login");
+    }
+
+    static public String getLoginByAuth(HttpHeaders headers) {
+        String token = headers.getHeaderString("Authorization");
+
+        String login;
+        try {
+            login = getUserLogin(token);
+        }
+        catch (SQLException e) {
+            throw new DatabaseException();
+        }
+        if (login == null) {
+            throw new UnauthorizedException();
+        }
+
+        return login;
     }
 }

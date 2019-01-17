@@ -1,11 +1,12 @@
 package ru.pussy_penetrator.util;
 
-import ru.pussy_penetrator.DBListener;
+import com.sun.istack.internal.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
+import java.util.Map;
 
 public class DBUtil {
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -70,11 +71,14 @@ public class DBUtil {
     }
 
     public static void executeFile(String path) throws IOException, SQLException {
+        executeFileAndReplace(path, null);
+    }
+
+    public static void executeFileAndReplace(String path, @Nullable Map<String, String> replaces) throws IOException, SQLException {
         ClassLoader classLoader = DBUtil.class.getClassLoader();
-        // path = URLDecoder.decode(classLoader.getResource(path).getPath(), "UTF-8");
         InputStreamReader reader = new InputStreamReader(classLoader.getResourceAsStream(path));
 
-        scriptRunner.runScript(new BufferedReader(reader));
+        scriptRunner.runScript(new BufferedReader(reader), replaces);
     }
 
 }

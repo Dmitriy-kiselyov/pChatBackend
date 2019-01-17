@@ -1,9 +1,11 @@
 import ru.pussy_penetrator.model.AuthUser;
-import ru.pussy_penetrator.model.AuthUserDB;
+import ru.pussy_penetrator.model.AuthDB;
 import ru.pussy_penetrator.util.DBUtil;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DBInflater {
     public static void main(String[] args) throws Exception {
@@ -17,7 +19,7 @@ public class DBInflater {
     }
 
     private static void inflate() throws SQLException, IOException {
-        // ENTER COMMANDS
+        createMessagesTable();
     }
 
     private static void create() throws SQLException, IOException {
@@ -28,6 +30,14 @@ public class DBInflater {
         DBUtil.executeFile("create_users.sql");
     }
 
+    private static void createMessagesTable() throws IOException, SQLException {
+        Map<String, String> replaces = new HashMap<>();
+        replaces.put("<login1>", "Dima");
+        replaces.put("<login2>", "Tanya");
+
+        DBUtil.executeFileAndReplace("create_messages.sql", replaces);
+    }
+
     private static void inflateUsers() throws SQLException {
         AuthUser[] users = new AuthUser[] {
             new AuthUser("Dima", "123456"),
@@ -35,6 +45,6 @@ public class DBInflater {
             new AuthUser("Popka", "Durak")
         };
 
-        AuthUserDB.inflateUsers(users);
+        AuthDB.inflateUsers(users);
     }
 }
