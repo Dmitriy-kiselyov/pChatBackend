@@ -1,6 +1,9 @@
 package ru.pussy_penetrator;
 
+import ru.pussy_penetrator.exception.DatabaseException;
+import ru.pussy_penetrator.exception.UnauthorizedException;
 import ru.pussy_penetrator.model.*;
+import ru.pussy_penetrator.response.UserListResponse;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -9,18 +12,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.util.List;
-
-import static ru.pussy_penetrator.model.UserMessagePreviewListResponse.*;
 
 @Path("users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserMessagePreviewService {
     @GET
-    public UserMessagePreviewListResponse getAllUsers(@Context HttpHeaders headers) {
+    public UserListResponse getAllUsers(@Context HttpHeaders headers) {
         String token = headers.getHeaderString("Authorization");
 
         String login;
@@ -34,7 +34,7 @@ public class UserMessagePreviewService {
             throw new UnauthorizedException();
         }
 
-        List<UserMessagePreview> users;
+        List<UserPreview> users;
         try {
              users = UserMessagePreviewDB.getAllUsersExcept(login);
         }
@@ -42,6 +42,6 @@ public class UserMessagePreviewService {
             throw new DatabaseException();
         }
 
-        return new UserMessagePreviewListResponse(users);
+        return new UserListResponse(users);
     }
 }

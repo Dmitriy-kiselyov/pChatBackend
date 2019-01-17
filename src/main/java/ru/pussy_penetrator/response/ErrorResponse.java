@@ -1,4 +1,4 @@
-package ru.pussy_penetrator.model;
+package ru.pussy_penetrator.response;
 
 public class ErrorResponse {
     private int code;

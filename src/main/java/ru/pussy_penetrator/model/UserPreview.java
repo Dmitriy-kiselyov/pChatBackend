@@ -1,11 +1,11 @@
 package ru.pussy_penetrator.model;
 
-public class UserMessagePreview {
+public class UserPreview {
     private String login;
 
-    public UserMessagePreview() {}
+    public UserPreview() {}
 
-    public UserMessagePreview(String login) {
+    public UserPreview(String login) {
         this.login = login;
     }
 

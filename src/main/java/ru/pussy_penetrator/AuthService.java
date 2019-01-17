@@ -1,7 +1,9 @@
 package ru.pussy_penetrator;
 
 import ru.pussy_penetrator.model.*;
-import ru.pussy_penetrator.model.AuthResponse.ErrorCode;
+import ru.pussy_penetrator.response.AuthResponse;
+import ru.pussy_penetrator.response.AuthResponse.ErrorCode;
+import ru.pussy_penetrator.response.StatusResponse;
 import ru.pussy_penetrator.util.UserValidator;
 import ru.pussy_penetrator.util.UserValidator.LoginValidationError;
 import ru.pussy_penetrator.util.UserValidator.PasswordValidationError;

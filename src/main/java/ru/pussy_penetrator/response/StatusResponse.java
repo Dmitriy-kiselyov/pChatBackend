@@ -1,4 +1,4 @@
-package ru.pussy_penetrator.model;
+package ru.pussy_penetrator.response;
 
 public enum StatusResponse {
     SUCCESS("success"), ERROR("error");

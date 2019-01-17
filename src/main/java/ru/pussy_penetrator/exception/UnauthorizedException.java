@@ -1,4 +1,4 @@
-package ru.pussy_penetrator.model;
+package ru.pussy_penetrator.exception;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;

@@ -1,20 +1,22 @@
-package ru.pussy_penetrator.model;
+package ru.pussy_penetrator.response;
+
+import ru.pussy_penetrator.model.UserPreview;
 
 import java.util.List;
 
-public class UserMessagePreviewListResponse {
+public class UserListResponse {
     private String status;
     private ErrorResponse error;
-    private List<UserMessagePreview> response;
+    private List<UserPreview> response;
 
-    public UserMessagePreviewListResponse() {}
+    public UserListResponse() {}
 
-    public UserMessagePreviewListResponse(List<UserMessagePreview> users) {
+    public UserListResponse(List<UserPreview> users) {
         status = StatusResponse.SUCCESS.get();
         response = users;
     }
 
-    public UserMessagePreviewListResponse(ErrorCode code, String message) {
+    public UserListResponse(ErrorCode code, String message) {
         this.status = StatusResponse.ERROR.get();
         error = new ErrorResponse(code.get(), message);
     }
@@ -35,11 +37,11 @@ public class UserMessagePreviewListResponse {
         this.error = error;
     }
 
-    public List<UserMessagePreview> getResponse() {
+    public List<UserPreview> getResponse() {
         return response;
     }
 
-    public void setResponse(List<UserMessagePreview> response) {
+    public void setResponse(List<UserPreview> response) {
         this.response = response;
     }
 
