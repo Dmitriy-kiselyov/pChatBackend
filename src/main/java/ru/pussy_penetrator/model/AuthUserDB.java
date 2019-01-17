@@ -4,6 +4,7 @@ import com.sun.istack.internal.Nullable;
 import ru.pussy_penetrator.util.AuthUtils;
 import ru.pussy_penetrator.util.DBUtil;
 
+import javax.validation.constraints.Null;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -61,5 +62,22 @@ public class AuthUserDB {
         ResultSet result = DBUtil.execute(query);
 
         return result.next();
+    }
+
+    @Nullable
+    static public String getUserLogin(String token) throws SQLException {
+        if (token == null) {
+            return null;
+        }
+
+        String query = "SELECT login FROM " + TABLE + " WHERE token = \"" + token + "\"";
+        ResultSet result = DBUtil.execute(query);
+
+        boolean userExists = result.next();
+        if (!userExists) {
+            return null;
+        }
+
+        return result.getString("login");
     }
 }

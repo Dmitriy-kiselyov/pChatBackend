@@ -10,8 +10,12 @@ import java.util.List;
 public class UserMessagePreviewDB {
     private static String TABLE = "pchat.users";
 
-    public static List<UserMessagePreview> getAllUsers() throws SQLException {
-        String query = "SELECT login FROM " + TABLE;
+    public static List<UserMessagePreview> getAllUsersExcept(String login) throws SQLException {
+        String query = "SELECT login FROM " + TABLE + " WHERE login <> \"" + login + "\"";
+        return getUsersFromQuery(query);
+    }
+
+    private static List<UserMessagePreview> getUsersFromQuery(String query) throws SQLException {
         ResultSet result = DBUtil.execute(query);
 
         LinkedList<UserMessagePreview> users = new LinkedList<>();
