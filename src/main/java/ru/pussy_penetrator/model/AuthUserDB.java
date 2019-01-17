@@ -58,7 +58,7 @@ public class AuthUserDB {
 
     static public boolean isUserExists(AuthUser user) throws SQLException {
         String query = "SELECT * FROM " + TABLE
-                + " WHERE login = \"" + user.getLogin() + "\"";
+                + " WHERE login = \"" + user.getLogin() + "\" COLLATE SQL_Latin1_General_CP1_CI_AS";
         ResultSet result = DBUtil.execute(query);
 
         return result.next();
