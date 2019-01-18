@@ -1,5 +1,6 @@
 package ru.pussy_penetrator.model;
 
+import com.mysql.cj.xdevapi.SqlDataResult;
 import ru.pussy_penetrator.response.MessageResponse;
 import ru.pussy_penetrator.util.DBUtil;
 
@@ -30,7 +31,16 @@ public class MessageDB {
         String table = getTableName(login1, login2);
         String query = "SELECT * FROM " + table + " WHERE id >= " + untilId;
 
-        ResultSet result = DBUtil.execute(query);
+        ResultSet result;
+        try {
+            result = DBUtil.execute(query);
+        }
+        catch (SQLException e) {
+            if (e.getErrorCode() == 1146) { // table does not exists
+                return new LinkedList<>();
+            }
+            throw e;
+        }
 
         LinkedList<MessageResponse> messages = new LinkedList<>();
         while(result.next()) {
