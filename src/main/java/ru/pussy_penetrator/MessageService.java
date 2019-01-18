@@ -14,7 +14,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -53,7 +52,7 @@ public class MessageService {
     }
 
     @GET
-    public MessageListResponse getAllMessages(@QueryParam("for") String target, @Context HttpHeaders headers) {
+    public MessageListResponse getAllMessages(@QueryParam("for") String target, @QueryParam("until") Integer untilId, @Context HttpHeaders headers) {
         String login = AuthDB.getLoginByAuth(headers);
 
         try {
@@ -65,9 +64,13 @@ public class MessageService {
             throw new DatabaseException();
         }
 
+        if (untilId == null) {
+            untilId = 1;
+        }
+
         List<MessageResponse> messages;
         try {
-            messages = MessageDB.getAllMessages(login, target);
+            messages = MessageDB.getMessagesUntil(login, target, untilId);
         }
         catch (SQLException e) {
             throw new DatabaseException();

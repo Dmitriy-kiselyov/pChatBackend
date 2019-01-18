@@ -26,9 +26,9 @@ public class MessageDB {
         tryInsertMessage(sender, message);
     }
 
-    public static List<MessageResponse> getAllMessages(String login1, String login2) throws SQLException {
+    public static List<MessageResponse> getMessagesUntil(String login1, String login2, int untilId) throws SQLException {
         String table = getTableName(login1, login2);
-        String query = "SELECT * FROM " + table;
+        String query = "SELECT * FROM " + table + " WHERE id >= " + untilId;
 
         ResultSet result = DBUtil.execute(query);
 
