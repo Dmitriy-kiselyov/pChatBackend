@@ -67,7 +67,7 @@ public class MessageDB {
     }
 
     private static String[] sortedLogins(String login1, String login2) {
-        if (login1.compareTo(login2) < 0) {
+        if (login1.compareToIgnoreCase(login2) < 0) {
             return new String[] {login1, login2};
         } else {
             return new String[] {login2, login1};
