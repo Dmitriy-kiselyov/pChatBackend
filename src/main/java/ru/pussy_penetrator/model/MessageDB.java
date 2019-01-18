@@ -1,10 +1,14 @@
 package ru.pussy_penetrator.model;
 
+import ru.pussy_penetrator.response.MessageResponse;
 import ru.pussy_penetrator.util.DBUtil;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class MessageDB {
@@ -20,6 +24,31 @@ public class MessageDB {
 
         createTable(sender, message.getTarget());
         tryInsertMessage(sender, message);
+    }
+
+    public static List<MessageResponse> getAllMessages(String login1, String login2) throws SQLException {
+        String table = getTableName(login1, login2);
+        String query = "SELECT * FROM " + table;
+
+        ResultSet result = DBUtil.execute(query);
+
+        LinkedList<MessageResponse> messages = new LinkedList<>();
+        while(result.next()) {
+            int id = result.getInt("id");
+            long time = result.getLong("time");
+            String text = result.getString("text");
+            String sender = result.getString("sender");
+
+            MessageResponse message = new MessageResponse();
+            message.setId(id);
+            message.setTime(time);
+            message.setText(text);
+            message.setSender(sender);
+
+            messages.add(message);
+        }
+
+        return messages;
     }
 
     private static String getTableName(String login1, String login2) {

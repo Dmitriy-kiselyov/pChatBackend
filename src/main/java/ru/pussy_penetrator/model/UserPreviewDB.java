@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserMessagePreviewDB {
+public class UserPreviewDB {
     private static String TABLE = "pchat.users";
 
     public static List<UserPreview> getAllUsersExcept(String login) throws SQLException {

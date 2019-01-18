@@ -24,7 +24,7 @@ public class UserPreviewService {
 
         List<UserPreview> users;
         try {
-             users = UserMessagePreviewDB.getAllUsersExcept(login);
+             users = UserPreviewDB.getAllUsersExcept(login);
         }
         catch (SQLException e) {
             throw new DatabaseException();
